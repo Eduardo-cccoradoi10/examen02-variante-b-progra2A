@@ -4,4 +4,13 @@
   <artifactId>venta.de.libros.ui</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>venta-de-libros-ui</name>
+  
+  <dependencies>
+    <dependency>
+     <groupId>umg.edu.gt.progra2</groupId>
+     <artifactId>venta.de.libros.core</artifactId>
+     <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+  
 </project>
