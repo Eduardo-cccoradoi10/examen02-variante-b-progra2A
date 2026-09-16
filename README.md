@@ -1,0 +1,1 @@
+# examen02-variante-b-progra2A
