@@ -13,7 +13,7 @@ public class LibroDAO {
     
    
    
-    public Optional<Libro> buscarPorId(int id) throws SQLException { ... }
+ 
     public boolean actualizar(Libro libro) throws SQLException { ... }
     public boolean eliminar(int id) throws SQLException { ... }
     
@@ -78,14 +78,32 @@ public class LibroDAO {
         return libros;
     }
     
+    public Optional<Libro> buscarPorId(int id) throws SQLException {
+        String sql = "SELECT id, titulo, autor, categoria, precio, existencias, anio_publicacion, isbn FROM libros WHERE id = ?";
+
+        try (Connection conexion = DriverManager.getConnection(URL, USUARIO, PASSWORD);
+             PreparedStatement statement = conexion.prepareStatement(sql)) {
+
+            statement.setInt(1, id);
+
+            try (ResultSet resultado = statement.executeQuery()) {
+                if (resultado.next()) {
+                    return Optional.of(mapearFila(resultado));
+                }
+                return Optional.empty();
+            }
+        }
+    }
+
+    
     private Libro mapearFila(ResultSet resultado) throws SQLException {
         int id = resultado.getInt("id");
         String titulo = resultado.getString("titulo");
         String autor = resultado.getString("autor");
         String categoria = resultado.getString("categoria");
-        String precio = resultado.getString("precio");
-        String existencias = resultado.getString("existencias");
-        String anioPublicacion = resultado.getString("anioPublicacion");
+        double precio = resultado.getDouble("precio");
+        int existencias = resultado.getInt("existencias");
+        int anioPublicacion = resultado.getInt("anioPublicacion");
         return new Libro(id, titulo, autor, categoria, precio, existencias, anioPublicacion);
     }
 }
