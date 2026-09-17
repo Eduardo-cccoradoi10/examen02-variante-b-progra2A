@@ -10,9 +10,24 @@ public class Libro {
     private int existencias;
     private int anioPublicacion;
     
+    //Constructor
+    public Libro(int id, String titulo, String autor, String categoria, double precio, int existencias, int anioPublicacion) {
+        this.id = id;
+        this.titulo = titulo;
+        this.autor = autor;
+        this.categoria = categoria;
+        this.precio = precio;
+        this.existencias = existencias;
+        this.anioPublicacion = anioPublicacion;
+    }
+    
+    public Libro(String titulo, String autor, String categoria, double precio, int existencias, int anioPublicacion) {
+        this(0, titulo, autor, categoria, precio, existencias, anioPublicacion);
+    }
+    
     // Getters y setters
     
-    public String getTitulo() {
+	public String getTitulo() {
 		return titulo;
 	}
 	public void setTitulo(String titulo) {

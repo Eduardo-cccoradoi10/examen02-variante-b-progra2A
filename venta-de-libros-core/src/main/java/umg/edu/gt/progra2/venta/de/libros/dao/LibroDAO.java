@@ -63,6 +63,29 @@ public class LibroDAO {
         return libro;
     }
     
-    
+    public List<Libro> listarTodos() throws SQLException {
+        String sql = "SELECT id, titulo, autor, isbn FROM libros ORDER BY id";
+        List<Libro> libros = new ArrayList<>();
 
+        try (Connection conexion = DriverManager.getConnection(URL, USUARIO, PASSWORD);
+             PreparedStatement statement = conexion.prepareStatement(sql);
+             ResultSet resultado = statement.executeQuery()) {
+
+            while (resultado.next()) {
+                libros.add(mapearFila(resultado));
+            }
+        }
+        return libros;
+    }
+    
+    private Libro mapearFila(ResultSet resultado) throws SQLException {
+        int id = resultado.getInt("id");
+        String titulo = resultado.getString("titulo");
+        String autor = resultado.getString("autor");
+        String categoria = resultado.getString("categoria");
+        String precio = resultado.getString("precio");
+        String existencias = resultado.getString("existencias");
+        String anioPublicacion = resultado.getString("anioPublicacion");
+        return new Libro(id, titulo, autor, categoria, precio, existencias, anioPublicacion);
+    }
 }
