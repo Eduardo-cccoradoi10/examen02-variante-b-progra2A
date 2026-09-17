@@ -15,7 +15,7 @@ public class LibroDAO {
    
  
    
-    public boolean eliminar(int id) throws SQLException { ... }
+   
     
     public Libro crear(Libro libro) throws SQLException {
         // Validaciones de negocio
@@ -128,6 +128,19 @@ public class LibroDAO {
 
             int filas = statement.executeUpdate();
             return filas > 0; // true si se actualizó al menos un registro
+        }
+    }
+
+    public boolean eliminar(int id) throws SQLException {
+        String sql = "DELETE FROM libros WHERE id = ?";
+
+        try (Connection conexion = DriverManager.getConnection(URL, USUARIO, PASSWORD);
+             PreparedStatement statement = conexion.prepareStatement(sql)) {
+
+            statement.setInt(1, id);
+
+            int filas = statement.executeUpdate();
+            return filas > 0; // true si se eliminó al menos un registro
         }
     }
 
