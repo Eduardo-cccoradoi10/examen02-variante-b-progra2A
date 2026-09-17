@@ -4,4 +4,19 @@
   <artifactId>venta.de.libros.core</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>venta-de-libros-core</name>
+  
+  <properties>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.mysql</groupId>
+      <artifactId>mysql-connector-j</artifactId>
+      <version>8.0.33</version>
+    </dependency>
+  </dependencies>
+  
 </project>

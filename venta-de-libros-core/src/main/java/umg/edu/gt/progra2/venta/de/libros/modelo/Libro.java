@@ -8,21 +8,21 @@ public class Libro {
     private String categoria;
     private double precio;
     private int existencias;
-    private int anioPublicacion;
+    private int anio_publicacion;
     
     //Constructor
-    public Libro(int id, String titulo, String autor, String categoria, double precio, int existencias, int anioPublicacion) {
+    public Libro(int id, String titulo, String autor, String categoria, double precio, int existencias, int anio_publicacion) {
         this.id = id;
         this.titulo = titulo;
         this.autor = autor;
         this.categoria = categoria;
         this.precio = precio;
         this.existencias = existencias;
-        this.anioPublicacion = anioPublicacion;
+        this.anio_publicacion = anio_publicacion;
     }
     
-    public Libro(String titulo, String autor, String categoria, double precio, int existencias, int anioPublicacion) {
-        this(0, titulo, autor, categoria, precio, existencias, anioPublicacion);
+    public Libro(String titulo, String autor, String categoria, double precio, int existencias, int anio_publicacion) {
+        this(0, titulo, autor, categoria, precio, existencias, anio_publicacion);
     }
     
     // Getters y setters
@@ -58,10 +58,10 @@ public class Libro {
 		this.existencias = existencias;
 	}
 	public int getAnioPublicacion() {
-		return anioPublicacion;
+		return anio_publicacion;
 	}
-	public void setAnioPublicacion(int anioPublicacion) {
-		this.anioPublicacion = anioPublicacion;
+	public void setAnioPublicacion(int anio_publicacion) {
+		this.anio_publicacion = anio_publicacion;
 	}
 	public int getId() {
 		return id;

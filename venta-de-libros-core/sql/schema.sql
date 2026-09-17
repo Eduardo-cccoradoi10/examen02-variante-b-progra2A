@@ -27,3 +27,6 @@ ADD COLUMN existencias INT NOT NULL;
 -- Agregar columna año de publicación con restricción <= año actual
 ALTER TABLE libros
 ADD COLUMN anio_publicacion INT NOT NULL;
+
+ALTER TABLE libros MODIFY isbn VARCHAR(50) NULL;
+

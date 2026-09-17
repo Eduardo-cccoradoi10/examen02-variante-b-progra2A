@@ -7,9 +7,9 @@ import java.util.*;
 
 public class LibroDAO {
 	
-	private static final String URL = "jdbc:mysql://localhost:3306/prog2_db?useSSL=false&serverTimezone=UTC";
+	private static final String URL = "jdbc:mysql://localhost:3307/prog2_db?useSSL=false&serverTimezone=UTC";
     private static final String USUARIO = "root";
-    private static final String PASSWORD = "PASSWORD PENDIENTE";
+    private static final String PASSWORD = "154872";
     
    
    
@@ -38,7 +38,7 @@ public class LibroDAO {
 
         // SQL para insertar
         String sql = "INSERT INTO libros (titulo, autor, categoria, precio, existencias, anio_publicacion) "
-                   + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+                   + "VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conexion = DriverManager.getConnection(URL, USUARIO, PASSWORD);
              PreparedStatement statement = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -64,7 +64,7 @@ public class LibroDAO {
     }
     
     public List<Libro> listarTodos() throws SQLException {
-        String sql = "SELECT id, titulo, autor, isbn FROM libros ORDER BY id";
+        String sql = "SELECT id, titulo, autor, categoria, precio, existencias, anio_publicacion FROM libros ORDER BY id";
         List<Libro> libros = new ArrayList<>();
 
         try (Connection conexion = DriverManager.getConnection(URL, USUARIO, PASSWORD);
@@ -79,7 +79,7 @@ public class LibroDAO {
     }
     
     public Optional<Libro> buscarPorId(int id) throws SQLException {
-        String sql = "SELECT id, titulo, autor, categoria, precio, existencias, anio_publicacion, isbn FROM libros WHERE id = ?";
+        String sql = "SELECT id, titulo, autor, categoria, precio, existencias, anio_publicacion FROM libros WHERE id = ?";
 
         try (Connection conexion = DriverManager.getConnection(URL, USUARIO, PASSWORD);
              PreparedStatement statement = conexion.prepareStatement(sql)) {
@@ -113,7 +113,7 @@ public class LibroDAO {
             throw new IllegalArgumentException("El año de publicación no puede ser mayor al actual");
         }
 
-        String sql = "UPDATE libros SET titulo = ?, autor = ?, categoria = ?, precio = ?, existencias = ?, anio_publicacion = ?, isbn = ? WHERE id = ?";
+        String sql = "UPDATE libros SET titulo = ?, autor = ?, categoria = ?, precio = ?, existencias = ?, anio_publicacion = ? WHERE id = ?";
 
         try (Connection conexion = DriverManager.getConnection(URL, USUARIO, PASSWORD);
              PreparedStatement statement = conexion.prepareStatement(sql)) {
@@ -152,7 +152,7 @@ public class LibroDAO {
         String categoria = resultado.getString("categoria");
         double precio = resultado.getDouble("precio");
         int existencias = resultado.getInt("existencias");
-        int anioPublicacion = resultado.getInt("anioPublicacion");
-        return new Libro(id, titulo, autor, categoria, precio, existencias, anioPublicacion);
+        int anio_publicacion = resultado.getInt("anio_publicacion");
+        return new Libro(id, titulo, autor, categoria, precio, existencias, anio_publicacion);
     }
 }
