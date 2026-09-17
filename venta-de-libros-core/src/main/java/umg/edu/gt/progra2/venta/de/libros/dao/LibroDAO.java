@@ -2,12 +2,67 @@ package umg.edu.gt.progra2.venta.de.libros.dao;
 
 import umg.edu.gt.progra2.venta.de.libros.modelo.Libro;
 import java.sql.*;
+import java.time.Year;
 import java.util.*;
 
 public class LibroDAO {
-    public Libro crear(Libro libro) throws SQLException { ... }
-    public List<Libro> listarTodos() throws SQLException { ... }
+	
+	private static final String URL = "jdbc:mysql://localhost:3306/prog2_db?useSSL=false&serverTimezone=UTC";
+    private static final String USUARIO = "root";
+    private static final String PASSWORD = "PASSWORD PENDIENTE";
+    
+   
+   
     public Optional<Libro> buscarPorId(int id) throws SQLException { ... }
     public boolean actualizar(Libro libro) throws SQLException { ... }
     public boolean eliminar(int id) throws SQLException { ... }
+    
+    public Libro crear(Libro libro) throws SQLException {
+        // Validaciones de negocio
+    	
+        if (libro.getTitulo() == null || libro.getTitulo().isEmpty()) {
+            throw new IllegalArgumentException("El título no puede estar vacío");
+        }
+        if (libro.getAutor() == null || libro.getAutor().isEmpty()) {
+            throw new IllegalArgumentException("El autor no puede estar vacío");
+        }
+        if (libro.getPrecio() <= 0) {
+            throw new IllegalArgumentException("El precio debe ser mayor a cero");
+        }
+        if (libro.getExistencias() < 0) {
+            throw new IllegalArgumentException("Las existencias no pueden ser negativas");
+        }
+        if (libro.getAnioPublicacion() > Year.now().getValue()) {
+            throw new IllegalArgumentException("El año de publicación no puede ser mayor al actual");
+        }
+
+        // SQL para insertar
+        String sql = "INSERT INTO libros (titulo, autor, categoria, precio, existencias, anio_publicacion) "
+                   + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection conexion = DriverManager.getConnection(URL, USUARIO, PASSWORD);
+             PreparedStatement statement = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            statement.setString(1, libro.getTitulo());
+            statement.setString(2, libro.getAutor());
+            statement.setString(3, libro.getCategoria());
+            statement.setDouble(4, libro.getPrecio());
+            statement.setInt(5, libro.getExistencias());
+            statement.setInt(6, libro.getAnioPublicacion());
+
+            int filas = statement.executeUpdate();
+
+            if (filas > 0) {
+                try (ResultSet claves = statement.getGeneratedKeys()) {
+                    if (claves.next()) {
+                        libro.setId(claves.getInt(1));
+                    }
+                }
+            }
+        }
+        return libro;
+    }
+    
+    
+
 }
