@@ -9,11 +9,11 @@ public class Libro {
     private double precio;
     private int existencias;
     private int anio_publicacion;
-    private boolean disponibleParaPrestamo;
+    private boolean disponible;
 
     
     //Constructor
-    public Libro(int id, String titulo, String autor, String categoria, double precio, int existencias, int anio_publicacion, boolean diponible) {
+    public Libro(int id, String titulo, String autor, String categoria, double precio, int existencias, int anio_publicacion, boolean disponible) {
         this.id = id;
         this.titulo = titulo;
         this.autor = autor;
@@ -21,6 +21,7 @@ public class Libro {
         this.precio = precio;
         this.existencias = existencias;
         this.anio_publicacion = anio_publicacion;
+        this.disponible = disponible;
     }
     
     public Libro(String titulo, String autor, String categoria, double precio, int existencias, int anio_publicacion, boolean disponible) {
@@ -72,12 +73,12 @@ public class Libro {
 		this.id = id;
 	}
 
-	public boolean isDisponibleParaPrestamo() {
-		return disponibleParaPrestamo;
+	public boolean isDisponible() {
+		return disponible;
 	}
 
-	public void setDisponibleParaPrestamo(boolean disponibleParaPrestamo) {
-		this.disponibleParaPrestamo = disponibleParaPrestamo;
+	public void setDisponibleParaPrestamo(boolean disponible) {
+		this.disponible = disponible;
 	}
 
 }

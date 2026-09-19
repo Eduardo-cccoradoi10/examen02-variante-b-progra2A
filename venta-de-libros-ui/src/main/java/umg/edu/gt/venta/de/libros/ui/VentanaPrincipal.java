@@ -151,7 +151,7 @@ public class VentanaPrincipal extends JFrame {
                     l.getPrecio(),
                     l.getExistencias(),
                     l.getAnioPublicacion(),
-                    l.isDisponibleParaPrestamo() ? "Sí" : "No"
+                    l.isDisponible() ? "Sí" : "No"
                 });
             }
         } catch (SQLException ex) {

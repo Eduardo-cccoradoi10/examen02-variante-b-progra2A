@@ -64,7 +64,7 @@ public class LibroDAO {
     }
     
     public List<Libro> listarTodos() throws SQLException {
-        String sql = "SELECT id, titulo, autor, categoria, precio, existencias, anio_publicacion FROM libros ORDER BY id";
+        String sql = "SELECT id, titulo, autor, categoria, precio, existencias, anio_publicacion, disponible FROM libros ORDER BY id";
         List<Libro> libros = new ArrayList<>();
 
         try (Connection conexion = DriverManager.getConnection(URL, USUARIO, PASSWORD);
@@ -77,9 +77,9 @@ public class LibroDAO {
         }
         return libros;
     }
-    
+
     public Optional<Libro> buscarPorId(int id) throws SQLException {
-        String sql = "SELECT id, titulo, autor, categoria, precio, existencias, anio_publicacion FROM libros WHERE id = ?";
+        String sql = "SELECT id, titulo, autor, categoria, precio, existencias, anio_publicacion, disponible FROM libros WHERE id = ?";
 
         try (Connection conexion = DriverManager.getConnection(URL, USUARIO, PASSWORD);
              PreparedStatement statement = conexion.prepareStatement(sql)) {
@@ -94,6 +94,7 @@ public class LibroDAO {
             }
         }
     }
+
 
     public boolean actualizar(Libro libro) throws SQLException {
         // Validaciones de negocio
@@ -153,8 +154,8 @@ public class LibroDAO {
         double precio = resultado.getDouble("precio");
         int existencias = resultado.getInt("existencias");
         int anio_publicacion = resultado.getInt("anio_publicacion");
-        boolean disponibleParaPrestamo = resultado.getBoolean("disponible");
+        boolean disponible = resultado.getBoolean("disponible");
 
-        return new Libro(id, titulo, autor, categoria, precio, existencias, anio_publicacion, disponibleParaPrestamo);
+        return new Libro(id, titulo, autor, categoria, precio, existencias, anio_publicacion, disponible);
     }
 }
