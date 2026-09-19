@@ -13,7 +13,7 @@ public class Libro {
 
     
     //Constructor
-    public Libro(int id, String titulo, String autor, String categoria, double precio, int existencias, int anio_publicacion) {
+    public Libro(int id, String titulo, String autor, String categoria, double precio, int existencias, int anio_publicacion, boolean diponible) {
         this.id = id;
         this.titulo = titulo;
         this.autor = autor;
@@ -23,8 +23,8 @@ public class Libro {
         this.anio_publicacion = anio_publicacion;
     }
     
-    public Libro(String titulo, String autor, String categoria, double precio, int existencias, int anio_publicacion) {
-        this(0, titulo, autor, categoria, precio, existencias, anio_publicacion);
+    public Libro(String titulo, String autor, String categoria, double precio, int existencias, int anio_publicacion, boolean disponible) {
+        this(0, titulo, autor, categoria, precio, existencias, anio_publicacion, disponible);
     }
     
     // Getters y setters

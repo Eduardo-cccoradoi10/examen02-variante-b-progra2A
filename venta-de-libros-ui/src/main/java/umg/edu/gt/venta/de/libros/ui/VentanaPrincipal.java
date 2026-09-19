@@ -31,9 +31,13 @@ public class VentanaPrincipal extends JFrame {
     private JButton btnGuardar;
     private JButton btnLimpiar;
     private JButton btnEliminar;
+    
+    private JCheckBox chkDisponible;
+
 
     public VentanaPrincipal() {
         this.libroDAO = new LibroDAO();
+
         
         setTitle("Catálogo de Librería");
         setSize(900, 600);
@@ -42,7 +46,7 @@ public class VentanaPrincipal extends JFrame {
         setLayout(new BorderLayout(10, 10));
 
         // 1. Configuración de la Tabla (Listado)
-        String[] columnas = {"ID", "Título", "Autor", "Categoría", "Precio (Q)", "Existencias", "Año"};
+        String[] columnas = {"ID", "Título", "Autor", "Categoría", "Precio (Q)", "Existencias", "Año", "Disponible"};
         tableModel = new DefaultTableModel(columnas, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -68,6 +72,7 @@ public class VentanaPrincipal extends JFrame {
         txtPrecio = new JTextField();
         txtExistencias = new JTextField();
         txtAnio = new JTextField();
+        chkDisponible = new JCheckBox("Disponible para préstamo");
 
         panelFormulario.add(new JLabel("ID:"));
         panelFormulario.add(txtId);
@@ -83,6 +88,7 @@ public class VentanaPrincipal extends JFrame {
         panelFormulario.add(txtExistencias);
         panelFormulario.add(new JLabel("Año de Publicación:"));
         panelFormulario.add(txtAnio);
+        panelFormulario.add(chkDisponible);
 
         panelDerecho.add(panelFormulario, BorderLayout.NORTH);
 
@@ -120,6 +126,7 @@ public class VentanaPrincipal extends JFrame {
                     txtPrecio.setText(tableModel.getValueAt(fila, 4).toString());
                     txtExistencias.setText(tableModel.getValueAt(fila, 5).toString());
                     txtAnio.setText(tableModel.getValueAt(fila, 6).toString());
+                    chkDisponible.setSelected("Sí".equals(tableModel.getValueAt(fila, 7).toString()));
                 }
             }
         });
@@ -127,6 +134,8 @@ public class VentanaPrincipal extends JFrame {
         btnGuardar.addActionListener(e -> accionGuardar());
         btnLimpiar.addActionListener(e -> limpiarFormulario());
         btnEliminar.addActionListener(e -> accionEliminar());
+        
+
     }
 
     private void cargarDatosTabla() {
@@ -141,7 +150,8 @@ public class VentanaPrincipal extends JFrame {
                     l.getCategoria(),
                     l.getPrecio(),
                     l.getExistencias(),
-                    l.getAnioPublicacion()
+                    l.getAnioPublicacion(),
+                    l.isDisponibleParaPrestamo() ? "Sí" : "No"
                 });
             }
         } catch (SQLException ex) {
@@ -202,14 +212,16 @@ public class VentanaPrincipal extends JFrame {
             return;
         }
 
+        boolean disponible = chkDisponible.isSelected();
+
         try {
             if (txtId.getText().trim().isEmpty()) {
-                Libro nuevoLibro = new Libro(titulo, autor, categoria, precio, existencias, anio);
+                Libro nuevoLibro = new Libro(titulo, autor, categoria, precio, existencias, anio, disponible);
                 libroDAO.crear(nuevoLibro);
                 JOptionPane.showMessageDialog(this, "Libro registrado exitosamente.");
             } else {
                 int id = Integer.parseInt(txtId.getText().trim());
-                Libro libroExistente = new Libro(id, titulo, autor, categoria, precio, existencias, anio);
+                Libro libroExistente = new Libro(id, titulo, autor, categoria, precio, existencias, anio, disponible);
                 libroDAO.actualizar(libroExistente);
                 JOptionPane.showMessageDialog(this, "Libro actualizado correctamente.");
             }
@@ -219,6 +231,7 @@ public class VentanaPrincipal extends JFrame {
             JOptionPane.showMessageDialog(this, "Error al persistir cambios en la BD.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+
 
 
     private void accionEliminar() {

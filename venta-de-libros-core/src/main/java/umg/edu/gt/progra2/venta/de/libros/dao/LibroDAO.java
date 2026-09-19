@@ -153,6 +153,8 @@ public class LibroDAO {
         double precio = resultado.getDouble("precio");
         int existencias = resultado.getInt("existencias");
         int anio_publicacion = resultado.getInt("anio_publicacion");
-        return new Libro(id, titulo, autor, categoria, precio, existencias, anio_publicacion);
+        boolean disponibleParaPrestamo = resultado.getBoolean("disponible");
+
+        return new Libro(id, titulo, autor, categoria, precio, existencias, anio_publicacion, disponibleParaPrestamo);
     }
 }
