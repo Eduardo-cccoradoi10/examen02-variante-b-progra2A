@@ -9,6 +9,8 @@ public class Libro {
     private double precio;
     private int existencias;
     private int anio_publicacion;
+    private boolean disponibleParaPrestamo;
+
     
     //Constructor
     public Libro(int id, String titulo, String autor, String categoria, double precio, int existencias, int anio_publicacion) {
@@ -68,6 +70,14 @@ public class Libro {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public boolean isDisponibleParaPrestamo() {
+		return disponibleParaPrestamo;
+	}
+
+	public void setDisponibleParaPrestamo(boolean disponibleParaPrestamo) {
+		this.disponibleParaPrestamo = disponibleParaPrestamo;
 	}
 
 }
