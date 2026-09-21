@@ -9,7 +9,9 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class VentanaPrincipal extends JFrame {
 
@@ -31,6 +33,7 @@ public class VentanaPrincipal extends JFrame {
     private JButton btnGuardar;
     private JButton btnLimpiar;
     private JButton btnEliminar;
+    private JButton btnContarCategorias;
     
     private JCheckBox chkDisponible;
 
@@ -58,12 +61,14 @@ public class VentanaPrincipal extends JFrame {
         tablaLibros.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane scrollTabla = new JScrollPane(tablaLibros);
         add(scrollTabla, BorderLayout.CENTER);
+        
+        
 
         // 2. Formulario y Botones (Panel Este)
         JPanel panelDerecho = new JPanel(new BorderLayout(5, 5));
         panelDerecho.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        JPanel panelFormulario = new JPanel(new GridLayout(7, 2, 5, 8));
+        JPanel panelFormulario = new JPanel(new GridLayout(0, 1, 5, 8));
         txtId = new JTextField();
         txtId.setEditable(false); // Autoincremental por la BD
         txtTitulo = new JTextField();
@@ -97,10 +102,12 @@ public class VentanaPrincipal extends JFrame {
         btnGuardar = new JButton("Guardar");
         btnLimpiar = new JButton("Nuevo / Limpiar");
         btnEliminar = new JButton("Eliminar");
+        btnContarCategorias = new JButton("Contar por Categoría");
 
         panelBotones.add(btnGuardar);
         panelBotones.add(btnLimpiar);
         panelBotones.add(btnEliminar);
+        panelBotones.add(btnContarCategorias);
 
         panelDerecho.add(panelBotones, BorderLayout.SOUTH);
         add(panelDerecho, BorderLayout.EAST);
@@ -109,12 +116,16 @@ public class VentanaPrincipal extends JFrame {
         configurarEventos();
 
         // 4. Carga inicial de datos
-        cargarDatosTabla();
+        cargarDatosTabla();  
+        
     }
 
     private void configurarEventos() {
+    	
+    	btnContarCategorias.addActionListener(e -> contarPorCategoria());
+
         // Al hacer clic en un registro de la tabla se cargan los datos al formulario para editar
-        tablaLibros.addMouseListener(new MouseAdapter() {
+        tablaLibros.addMouseListener(new MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent e) {
                 int fila = tablaLibros.getSelectedRow();
@@ -127,6 +138,7 @@ public class VentanaPrincipal extends JFrame {
                     txtExistencias.setText(tableModel.getValueAt(fila, 5).toString());
                     txtAnio.setText(tableModel.getValueAt(fila, 6).toString());
                     chkDisponible.setSelected("Sí".equals(tableModel.getValueAt(fila, 7).toString()));
+                    
                 }
             }
         });
@@ -262,6 +274,31 @@ public class VentanaPrincipal extends JFrame {
             }
         }
     }
+    
+    
+   
+
+    private void contarPorCategoria() {
+        try {
+            List<Libro> lista = libroDAO.listarTodos();
+            Map<String, Integer> conteo = new HashMap<>();
+
+            for (Libro l : lista) {
+                String categoria = l.getCategoria();
+                conteo.put(categoria, conteo.getOrDefault(categoria, 0) + 1);
+            }
+
+            StringBuilder sb = new StringBuilder("Conteo por categoría:\n");
+            for (Map.Entry<String, Integer> entry : conteo.entrySet()) {
+                sb.append(entry.getKey()).append(" = ").append(entry.getValue()).append("\n");
+            }
+
+            JOptionPane.showMessageDialog(this, sb.toString(), "Resumen", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Error al contar categorías: " + ex.getMessage());
+        }
+    }
+
 
     private void limpiarFormulario() {
         txtId.setText("");

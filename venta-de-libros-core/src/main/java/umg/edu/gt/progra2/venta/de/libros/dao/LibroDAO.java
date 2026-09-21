@@ -37,8 +37,8 @@ public class LibroDAO {
         }
 
         // SQL para insertar
-        String sql = "INSERT INTO libros (titulo, autor, categoria, precio, existencias, anio_publicacion) "
-                   + "VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO libros (titulo, autor, categoria, precio, existencias, anio_publicacion, disponible) "
+                   + "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conexion = DriverManager.getConnection(URL, USUARIO, PASSWORD);
              PreparedStatement statement = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -49,6 +49,7 @@ public class LibroDAO {
             statement.setDouble(4, libro.getPrecio());
             statement.setInt(5, libro.getExistencias());
             statement.setInt(6, libro.getAnioPublicacion());
+            statement.setBoolean(7, libro.isDisponible());
 
             int filas = statement.executeUpdate();
 
@@ -114,7 +115,7 @@ public class LibroDAO {
             throw new IllegalArgumentException("El año de publicación no puede ser mayor al actual");
         }
 
-        String sql = "UPDATE libros SET titulo = ?, autor = ?, categoria = ?, precio = ?, existencias = ?, anio_publicacion = ? WHERE id = ?";
+        String sql = "UPDATE libros SET titulo = ?, autor = ?, categoria = ?, precio = ?, existencias = ?, anio_publicacion = ?, disponible = ? WHERE id = ?";
 
         try (Connection conexion = DriverManager.getConnection(URL, USUARIO, PASSWORD);
              PreparedStatement statement = conexion.prepareStatement(sql)) {
@@ -125,7 +126,8 @@ public class LibroDAO {
             statement.setDouble(4, libro.getPrecio());
             statement.setInt(5, libro.getExistencias());
             statement.setInt(6, libro.getAnioPublicacion());
-            statement.setInt(7, libro.getId());
+            statement.setBoolean(7, libro.isDisponible()); // Aquí va el boolean
+            statement.setInt(8, libro.getId());            // El id es el último parámetro
 
             int filas = statement.executeUpdate();
             return filas > 0; // true si se actualizó al menos un registro
